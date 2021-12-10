@@ -1,0 +1,4 @@
+ansible_user: joerod
+ansible_port: 5985
+ansible_connection: winrm
+ansible_password: "{{ vault_ansible_win_password }}"
