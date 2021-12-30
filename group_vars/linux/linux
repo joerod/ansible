@@ -1,3 +1,3 @@
 ansible_connection: ssh 
 ansible_ssh_user: joerod 
-ansible_ssh_pass: "{{ vault_ansible_linux_password }}"
+ansible_ssh_pass: ""

@@ -1,0 +1,68 @@
+- name: Install applications
+  hosts: all
+  remote_user: root
+  gather_facts: yes
+  tasks:
+    - name: Install python packages 
+      pip:
+        name:
+          - ansible-base
+          - beautifulsoup4 
+          - google-api-core 
+          - google-api-python-client
+          - google-auth
+          - google-auth-httplib2 
+          - google-auth-oauthlib
+          - googleapis-common-protos
+          - googletransx
+          - ipython
+          - numpy
+          - opencv-python 
+          - pandas
+          - Pillow
+          - PlexAPI
+          - psutil
+          - pykerberos
+          - pywinrm
+          - qbittorrent-api
+          - requests
+          - selenium
+          - slack-sdk
+          - timer
+          - tweepy
+          - youtube-dl
+          - websockets
+          - urllib3
+
+      when: ansible_distribution == 'Ubuntu'   
+    - name: Install snap store applications
+      community.general.snap:
+        name:
+          - firefox
+          - gh 
+          - gimp
+          - iptvnator
+          - jq
+          - libreoffice
+          - mqtt-explorer
+          - postman
+          - powershell
+          - rpi-imager
+          - snap-store
+          - spotify
+          - vlc
+      when: ansible_distribution == 'Ubuntu'    
+    - name: Windows packages 
+      win_chocolatey:
+        name: 
+          - chocolatey
+          - chocolatey-core.extension
+          - git
+          - googlechrome
+          - vlc
+          - 7zip
+          - itunes
+          - qbittorrent
+          - powershell-core
+        state: present
+      when: ansible_os_family == 'Windows' 

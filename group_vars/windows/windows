@@ -1,4 +1,4 @@
-ansible_user: joerod
-ansible_port: 5985
+ansible_user: joero
 ansible_connection: winrm
-ansible_password: "{{ vault_ansible_win_password }}"
+ansible_password: ""
+ansible_winrm_server_cert_validation: ignore
