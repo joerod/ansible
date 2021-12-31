@@ -3,17 +3,18 @@
   remote_user: root
   gather_facts: yes
   tasks:
-    - name: Setting apt repos
-      ansible.builtin.shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-      when: ansible_distribution == 'Ubuntu'  
-      become: yes
-    - name: Getting hashicorp release repo
-      ansible.builtin.shell: echo $(lsb_release -cs)
-      register: hashi_release
-      when: ansible_distribution == 'Ubuntu'  
-      become: yes 
     - name: Configure Ubuntu machine  
-      block:   
+      block:  
+      - name: Setting apt repos
+        ansible.builtin.shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - 
+        become: yes
+        register: hashi_repo
+        changed_when: hashi_repo.rc != 0
+      - name: Getting hashicopr release repo
+        ansible.builtin.shell: echo $(lsb_release -cs)
+        register: hashi_release
+        changed_when: hashi_release.rc != 0
+        become: yes  
       - name: Add source repository into sources list
         ansible.builtin.apt_repository:
           repo: deb https://apt.releases.hashicorp.com "{{hashi_release.stdout}}" main
