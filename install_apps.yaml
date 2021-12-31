@@ -7,7 +7,7 @@
       ansible.builtin.shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
       when: ansible_distribution == 'Ubuntu'  
       become: yes
-    - name: Getting hashicopr release repo
+    - name: Getting hashicorp release repo
       ansible.builtin.shell: echo $(lsb_release -cs)
       register: hashi_release
       when: ansible_distribution == 'Ubuntu'  
