@@ -3,54 +3,80 @@
   remote_user: root
   gather_facts: yes
   tasks:
-    - name: Install python packages 
-      pip:
-        name:
-          - ansible-base
-          - beautifulsoup4 
-          - google-api-core 
-          - google-api-python-client
-          - google-auth
-          - google-auth-httplib2 
-          - google-auth-oauthlib
-          - googleapis-common-protos
-          - googletransx
-          - ipython
-          - numpy
-          - opencv-python 
-          - pandas
-          - Pillow
-          - PlexAPI
-          - psutil
-          - pykerberos
-          - pywinrm
-          - qbittorrent-api
-          - requests
-          - selenium
-          - slack-sdk
-          - timer
-          - tweepy
-          - youtube-dl
-          - websockets
-          - urllib3
-
-      when: ansible_distribution == 'Ubuntu'   
-    - name: Install snap store applications
-      community.general.snap:
-        name:
-          - firefox
-          - gh 
-          - gimp
-          - iptvnator
-          - jq
-          - libreoffice
-          - mqtt-explorer
-          - postman
+    - name: Setting apt repos
+      ansible.builtin.shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+      when: ansible_distribution == 'Ubuntu'  
+      become: yes
+    - name: Getting hashicopr release repo
+      ansible.builtin.shell: echo $(lsb_release -cs)
+      register: hashi_release
+      when: ansible_distribution == 'Ubuntu'  
+      become: yes 
+    - name: Configure Ubuntu machine  
+      block:   
+      - name: Add source repository into sources list
+        ansible.builtin.apt_repository:
+          repo: deb https://apt.releases.hashicorp.com "{{hashi_release.stdout}}" main
+          state: present  
+      - name: Install apt packages
+        apt:
+          pkg:
+          - vault
+          - terraform
+          - telegram-desktop
+          - tcpdump
+          - python3.9
+          - python3-pip 
+          - ruby
           - powershell
-          - rpi-imager
-          - snap-store
-          - spotify
-          - vlc
+          - azure-cli
+          - audacity
+      - name: Install python packages 
+        pip:
+          name:
+            - ansible-base
+            - beautifulsoup4 
+            - google-api-core 
+            - google-api-python-client
+            - google-auth
+            - google-auth-httplib2 
+            - google-auth-oauthlib
+            - googleapis-common-protos
+            - googletransx
+            - ipython
+            - numpy
+            - opencv-python 
+            - pandas
+            - Pillow
+            - PlexAPI
+            - psutil
+            - pykerberos
+            - pywinrm
+            - qbittorrent-api
+            - requests
+            - selenium
+            - slack-sdk
+            - timer
+            - tweepy
+            - youtube-dl
+            - websockets
+            - urllib3  
+      - name: Install snap store applications
+        community.general.snap:
+          name:
+            - firefox
+            - gh 
+            - gimp
+            - iptvnator
+            - jq
+            - libreoffice
+            - mqtt-explorer
+            - postman
+            - powershell
+            - rpi-imager
+            - snap-store
+            - spotify
+            - vlc
       when: ansible_distribution == 'Ubuntu'    
     - name: Windows packages 
       win_chocolatey:
