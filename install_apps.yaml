@@ -8,9 +8,11 @@
       - name: Setting apt repos
         ansible.builtin.shell: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - 
         become: yes
+        args:
+          warn: false
         register: hashi_repo
         changed_when: hashi_repo.rc != 0
-      - name: Getting hashicopr release repo
+      - name: Getting hashicorp release repo
         ansible.builtin.shell: echo $(lsb_release -cs)
         register: hashi_release
         changed_when: hashi_release.rc != 0
@@ -78,6 +80,7 @@
             - snap-store
             - spotify
             - vlc
+            - code
       when: ansible_distribution == 'Ubuntu'    
     - name: Windows packages 
       win_chocolatey:
@@ -91,5 +94,7 @@
           - itunes
           - qbittorrent
           - powershell-core
+          - vscode
+          - putty
         state: present
       when: ansible_os_family == 'Windows' 
