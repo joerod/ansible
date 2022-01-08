@@ -3,5 +3,4 @@ localhost
 [linux:vars]
 ansible_python_interpreter=/usr/bin/python3.9
 [windows]
-MacDaddy
 jr-win11
