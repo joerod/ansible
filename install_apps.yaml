@@ -64,6 +64,8 @@
             - youtube-dl
             - websockets
             - urllib3  
+            - PlexServer
+            - playsound
       - name: Install snap store applications
         community.general.snap:
           name:
